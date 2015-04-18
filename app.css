@@ -1,0 +1,64 @@
+/* app css stylesheet */
+body {
+  height: 100%;
+}
+
+.ng-scope {
+  height:100%;
+  background-color:#F3F5F7;
+}
+
+#main_container {
+  max-height: 500px;
+  max-width: 1000px;
+  padding-top:20px;
+}
+
+.container {
+  height:100%;
+}
+
+.row {
+  height:100%;
+}
+
+
+#main {
+
+  height: 100%;
+}
+
+#menu {
+  background-color:#FF9999;
+  height: 100%;
+  color:#F3F5F7;
+}
+
+#main h1 {
+  position:absolute;
+  color:white;
+}
+
+#cell {
+  height: 120px;
+  background-color:#FF9999;
+  border:3px solid white;
+  color:white;
+  font-size:30px;
+  font-weight: bold;
+  text-align: center;
+  padding-top:30px;
+}
+
+#cell.yellow {
+  background-color:#ffcaca;
+  -moz-transition: all 0.5s ease-in;
+  /* WebKit */
+  -webkit-transition: all 0.5s ease-in;
+  /* Opera */
+  -o-transition: all 0.5s ease-in;
+  /* Standard */
+  transition: all 0.5s ease-in;
+}
+
+
