@@ -8,10 +8,11 @@ angular.module('myApp.directives', [])
             scope :{
                 setFn: '&'
             },
-            template: "<div width='400px' height='400px'></div>",
+            template: "<div></div>",
             link: function (scope, element, attribute) {
 
                 var cells;
+                var first;
                 initGame();
                 initTouch();
                 initKey();
@@ -37,33 +38,8 @@ angular.module('myApp.directives', [])
 
                 function initTouch() {
                     scope.goTo = function($event) {
-                        console.log($event);
-                        switch($event) {
-                            case 1:
-                                goTop();
-                                redrawCells();
-                                addRandomCell();
-                                break;
-                            case 2:
-                                goBottom();
-                                redrawCells();
-                                addRandomCell();
-                                break;
-                            case 3:
-                                goLeft();
-                                redrawCells();
-                                addRandomCell();
-                                break;
-                            case 4:
-                                goRight();
-                                redrawCells();
-                                addRandomCell();
 
-                                break;
-                            default:
-                                break;
-
-                        }
+                        goTo($event);
                     }
                     scope.setFn({fn: scope.goTo});
                 }
@@ -73,30 +49,44 @@ angular.module('myApp.directives', [])
                     angular.element($window).bind('keydown', function(e) {
                         switch (e.which) {
                             case 38:
-                                goTop();
-                                redrawCells();
-                                addRandomCell();
+                                goTo(1);
                                 break;
                             case 37:
-                                goLeft();
-                                redrawCells();
-                                addRandomCell();
+                                goTo(3);
                                 break;
                             case 39:
-                                goRight();
-                                redrawCells();
-                                addRandomCell();
+                                goTo(4);
                                 break;
                             case 40:
-                                goBottom();
-                                redrawCells();
-                                addRandomCell();
+                                goTo(2);
                                 break;
                         };
 
 
 
                     });
+                }
+
+                function goTo(to) {
+
+
+                    if (to == 1) {
+                        goTop();
+                    }
+                    else if (to==3) {
+                        goLeft();
+                    }
+                    else if (to == 2) {
+                        goBottom();
+                    }
+                    else {
+                        goRight();
+                    }
+
+
+                    redrawCells();
+                    addRandomCell();
+
                 }
 
                 function addRandomCell() {
@@ -118,7 +108,7 @@ angular.module('myApp.directives', [])
                         var rand_index = freeCells[rand];
                         var cell = cells[rand_index];
                         if (cell.getValue()==0) {
-
+                            cell.setNew(true);
                             cell.setValue(value);
                             notfound= false;
                         }
@@ -142,12 +132,18 @@ angular.module('myApp.directives', [])
 
                     for (var i=0; i<4;i++) {
 
-                        for (var j=3;j>0;j--) {
-                            var cell  = cells[j*4+i];
-                            var cell2 = cells[(j-1)*4+i];
-                            updateCellValue(cell, cell2);
 
+                        first = true;
+                        for (var w=0;w<3;w++) {
+                            for (var j=3;j>0;j--) {
+                                var cell  = cells[j*4+i];
+                                var cell2 = cells[(j-1)*4+i];
+                                updateCellValue(cell, cell2);
+
+                            }
                         }
+
+
 
                     }
 
@@ -157,11 +153,15 @@ angular.module('myApp.directives', [])
 
                     for (var i=0; i<4;i++) {
 
-                        for (var j=0;j<3;j++) {
-                            var cell  = cells[i*4+j];
-                            var cell2 = cells[i*4+j+1];
-                            updateCellValue(cell, cell2);
+                        first = true;
+                        for (var w=0;w<3;w++) {
 
+                            for (var j = 0; j < 3; j++) {
+                                var cell = cells[i * 4 + j];
+                                var cell2 = cells[i * 4 + j + 1];
+                                updateCellValue(cell, cell2);
+
+                            }
                         }
 
                     }
@@ -172,11 +172,16 @@ angular.module('myApp.directives', [])
 
                     for (var i=0; i<4;i++) {
 
-                        for (var j=3;j>0;j--) {
-                            var cell  = cells[i*4+j];
-                            var cell2 = cells[i*4+j-1];
-                            updateCellValue(cell, cell2);
 
+                        first = true;
+                        for (var w=0;w<3;w++) {
+
+                            for (var j = 3; j > 0; j--) {
+                                var cell = cells[i * 4 + j];
+                                var cell2 = cells[i * 4 + j - 1];
+                                updateCellValue(cell, cell2);
+
+                            }
                         }
 
                     }
@@ -187,11 +192,16 @@ angular.module('myApp.directives', [])
 
                     for (var i=0; i<4;i++) {
 
-                        for (var j=0;j<3;j++) {
-                            var cell  = cells[j*4+i];
-                            var cell2 = cells[(j+1)*4+i];
-                            updateCellValue(cell, cell2);
 
+                        first = true;
+                        for (var w=0;w<3;w++) {
+
+                            for (var j = 0; j < 3; j++) {
+                                var cell = cells[j * 4 + i];
+                                var cell2 = cells[(j + 1) * 4 + i];
+                                updateCellValue(cell, cell2);
+
+                            }
                         }
 
                     }
@@ -206,9 +216,10 @@ angular.module('myApp.directives', [])
                         cell2.setValue(cell.getValue());
                         cell.setValue(0);
                     }
-                    else if (cell.getValue() == cell2.getValue()) {
+                    else if (cell.getValue() == cell2.getValue() && first) {
                         cell.setValue(0);
                         cell2.setValue(cell2.getValue()*2);
+                        first = false;
                     }
                 }
 

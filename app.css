@@ -1,11 +1,13 @@
 /* app css stylesheet */
 body {
   height: 100%;
+  background-image:url("assets/background.jpg");
+  background-size:cover;
 }
 
 .ng-scope {
   height:100%;
-  background-color:#F3F5F7;
+
 }
 
 #main_container {
@@ -26,32 +28,36 @@ body {
 #main {
 
   height: 100%;
+  width:400px;
+  height: 400px;
+  margin:auto;
+  position:relative;
+  top:50%;
+  margin-top:-200px;
 }
 
-#menu {
-  background-color:#FF9999;
-  height: 100%;
-  color:#F3F5F7;
+h1 {
+  text-align: center;
+  color:#FF9999;
 }
 
-#main h1 {
-  position:absolute;
-  color:white;
-}
 
 #cell {
-  height: 120px;
-  background-color:#FF9999;
-  border:3px solid white;
+  height: 88px;
+  width:22%;
+  margin:1%;
+  float:left;
+  display: block;
+  position:relative;
+  border-radius:100px;
+  background-color:rgba(255, 255, 255, 0.3);
+  border:2px solid #FFF;
   color:white;
   font-size:30px;
   font-weight: bold;
   text-align: center;
-  padding-top:30px;
-}
+  padding-top:20px;
 
-#cell.yellow {
-  background-color:#ffcaca;
   -moz-transition: all 0.5s ease-in;
   /* WebKit */
   -webkit-transition: all 0.5s ease-in;
@@ -61,4 +67,46 @@ body {
   transition: all 0.5s ease-in;
 }
 
+#cell.full {
+  background-color:#ffcaca;
+
+}
+
+#cell.new {
+  background-color: #FF9999;
+}
+
+
+#i2048 {
+  position: absolute;
+  bottom:0px;
+  right: 0px;
+}
+
+
+@media only screen and (max-width : 420px) {
+
+  #main {
+
+    width:200px;
+    height: 200px;
+    margin-top:-100px;
+  }
+
+  #cell {
+
+    height: 44px;
+    padding-top:10px;
+    font-size:15px;
+
+
+  }
+
+  #i2048 {
+    width:200px;
+    height: auto;
+    position: absolute;
+  }
+
+}
 

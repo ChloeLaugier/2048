@@ -2,13 +2,14 @@ uiClasses.factory("Cell",
     function () {
         function Cell(obj) {
 
-            this.cell = new angular.element("<div class='col-xs-3' id='cell'></div>");
+            this.cell = new angular.element("<div  id='cell'></div>");
             this.cell.x = obj.x;
             this.cell.y = obj.y;
+            this.cell.new = true;
             this.cell.value =obj.value;
             if (this.cell.value > 0) {
                 this.cell.html(this.cell.value);
-                this.cell.addClass("yellow");
+                this.cell.addClass("full");
             }
 
         }
@@ -29,14 +30,27 @@ uiClasses.factory("Cell",
             setValue:function(value) {
                 this.cell.value = value;
             },
+            setNew:function(n) {
+              this.cell.new = true;
+            },
             redraw:function() {
                 if (this.cell.value > 0) {
                     this.cell.html(this.cell.value);
-                    this.cell.addClass("yellow");
+
+                    this.cell.addClass("full");
+
+                    if (this.cell.new) {
+                        this.cell.addClass("new");
+                        this.cell.new = false;
+                    }
+                    else {
+                        this.cell.removeClass("new");
+                    }
                 }
                 else {
                     this.cell.html("");
-                    this.cell.removeClass("yellow");
+                    this.cell.removeClass("full");
+                    this.cell.removeClass("new");
                 }
             }
 
