@@ -1,2 +1,2 @@
-# game_of_life
-Game of life simulator
+# 2048
+2048
