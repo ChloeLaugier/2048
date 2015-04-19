@@ -5,15 +5,20 @@ body {
   background-size:cover;
 }
 
+
+body.win {
+  background-image:url("assets/background_win.jpg");
+
+}
+
 .ng-scope {
   height:100%;
 
 }
 
 #main_container {
-  max-height: 500px;
-  max-width: 1000px;
-  padding-top:20px;
+  height: 100%;
+  width: 100%;
 }
 
 .container {
@@ -67,14 +72,67 @@ h1 {
   transition: all 0.5s ease-in;
 }
 
-#cell.full {
+#cell.full2 {
+  background-color:#E3D6C1;
+
+
+}
+
+#cell.full4 {
+  background-color:#ECD5B0;
+
+}
+
+#cell.full8 {
+  background-color:#DFC796;
+
+}
+
+#cell.full16 {
   background-color:#ffcaca;
 
 }
 
-#cell.new {
-  background-color: #FF9999;
+#cell.full32 {
+  background-color:#FF9999;
+
 }
+
+#cell.full64 {
+  background-color:#CBB5C5;
+
+}
+
+#cell.full128 {
+  background-color:#5F657B;
+
+}
+
+#cell.full256 {
+  background-color:#FF5C8E;
+
+}
+
+#cell.full512 {
+  background-color:#FF3A6E;
+
+}
+
+#cell.full1024 {
+  background-color:#FF003B;
+
+}
+
+h4 {
+  color:#FF3A6E;
+}
+
+#cell.new {
+  background-color:#FFF;
+  color:#FF9999;
+}
+
+
 
 
 #i2048 {
@@ -88,15 +146,15 @@ h1 {
 
   #main {
 
-    width:200px;
-    height: 200px;
-    margin-top:-100px;
+    width:260px;
+    height: 260px;
+    margin-top:-130px;
   }
 
   #cell {
 
-    height: 44px;
-    padding-top:10px;
+    height: 55px;
+    padding-top:15px;
     font-size:15px;
 
 

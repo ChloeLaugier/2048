@@ -7,9 +7,10 @@ uiClasses.factory("Cell",
             this.cell.y = obj.y;
             this.cell.new = true;
             this.cell.value =obj.value;
+            this.cell.justAdded = false;
             if (this.cell.value > 0) {
                 this.cell.html(this.cell.value);
-                this.cell.addClass("full");
+                this.cell.addClass("full"+this.cell.value);
             }
 
         }
@@ -33,24 +34,29 @@ uiClasses.factory("Cell",
             setNew:function(n) {
               this.cell.new = true;
             },
+            isJustAdded:function() {
+              return this.cell.justAdded;
+            },
+            setJustAdded:function(added) {
+                this.cell.justAdded = added;
+            },
             redraw:function() {
                 if (this.cell.value > 0) {
                     this.cell.html(this.cell.value);
 
-                    this.cell.addClass("full");
+                    this.cell.attr("class", "");
+
+                    this.cell.addClass("full"+this.cell.value);
 
                     if (this.cell.new) {
                         this.cell.addClass("new");
                         this.cell.new = false;
                     }
-                    else {
-                        this.cell.removeClass("new");
-                    }
+                    this.cell.justAdded = false;
                 }
                 else {
                     this.cell.html("");
-                    this.cell.removeClass("full");
-                    this.cell.removeClass("new");
+                    this.cell.attr("class", "");
                 }
             }
 

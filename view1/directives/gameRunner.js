@@ -1,6 +1,6 @@
 angular.module('myApp.directives', [])
-    .directive('gameRunner', ['Cell','$window',
-        function (Cell, $window) {
+    .directive('gameRunner', ['Cell','$window','ngDialog',
+        function (Cell, $window, ngDialog) {
         "use strict";
         return {
             restrict : 'EAC',
@@ -12,7 +12,8 @@ angular.module('myApp.directives', [])
             link: function (scope, element, attribute) {
 
                 var cells;
-                var first;
+                var addOne = false;
+                var loose = false;
                 initGame();
                 initTouch();
                 initKey();
@@ -70,6 +71,8 @@ angular.module('myApp.directives', [])
                 function goTo(to) {
 
 
+
+                    addOne = false;
                     if (to == 1) {
                         goTop();
                     }
@@ -85,7 +88,62 @@ angular.module('myApp.directives', [])
 
 
                     redrawCells();
+                    if (addOne) {
+                        addRandomCell();
+                    }
+                    else {
+                        checkLoose();
+                    }
+
+
+                }
+
+                function checkLoose() {
+
+                    var notfound = true;
+                    for (var j=0;j<4;j++) {
+                        for (var i=0; i<4;i++) {
+
+                            var cell  = cells[j*4+i];
+                            if (cell.getValue() == 0) {
+                                notfound = false;
+                                break;
+                            }
+                        }
+
+                    }
+
+                    if (notfound && !loose) {
+                        loose = true;
+                        ngDialog.open({
+                            template: '<h4>You loose !</h4><button class="btn btn-default" ng-click="closeThisDialog(\'retry\')">Retry</button>',
+                            plain: true,
+                            showClose:false,
+                            preCloseCallback: function(value) {
+                                retry();
+                                return true;
+
+                            }
+                        });
+                    }
+                }
+
+                function retry() {
+
+                    loose = false;
+                    for (var i=0 ; i<4; i++) {
+                        for (var j=0; j<4; j++) {
+
+                            var cell  = cells[i*4+j];
+                            cell.setValue(0);
+
+                        }
+
+                    }
                     addRandomCell();
+                    addRandomCell();
+
+
 
                 }
 
@@ -118,10 +176,7 @@ angular.module('myApp.directives', [])
                         }
 
                     }
-                    if (notfound) {
 
-                        alert("game over!!!");
-                    }
                     redrawCells();
 
 
@@ -133,11 +188,13 @@ angular.module('myApp.directives', [])
                     for (var i=0; i<4;i++) {
 
 
-                        first = true;
                         for (var w=0;w<3;w++) {
-                            for (var j=3;j>0;j--) {
+                            for (var j=1;j<4;j++) {
                                 var cell  = cells[j*4+i];
                                 var cell2 = cells[(j-1)*4+i];
+
+
+
                                 updateCellValue(cell, cell2);
 
                             }
@@ -153,12 +210,14 @@ angular.module('myApp.directives', [])
 
                     for (var i=0; i<4;i++) {
 
-                        first = true;
                         for (var w=0;w<3;w++) {
 
-                            for (var j = 0; j < 3; j++) {
+                            for (var j = 2; j >=0; j--) {
                                 var cell = cells[i * 4 + j];
                                 var cell2 = cells[i * 4 + j + 1];
+
+
+
                                 updateCellValue(cell, cell2);
 
                             }
@@ -173,12 +232,13 @@ angular.module('myApp.directives', [])
                     for (var i=0; i<4;i++) {
 
 
-                        first = true;
                         for (var w=0;w<3;w++) {
 
-                            for (var j = 3; j > 0; j--) {
+                            for (var j = 1; j < 4; j++) {
                                 var cell = cells[i * 4 + j];
                                 var cell2 = cells[i * 4 + j - 1];
+
+
                                 updateCellValue(cell, cell2);
 
                             }
@@ -193,12 +253,12 @@ angular.module('myApp.directives', [])
                     for (var i=0; i<4;i++) {
 
 
-                        first = true;
                         for (var w=0;w<3;w++) {
 
-                            for (var j = 0; j < 3; j++) {
+                            for (var j = 2; j >=0; j--) {
                                 var cell = cells[j * 4 + i];
                                 var cell2 = cells[(j + 1) * 4 + i];
+
                                 updateCellValue(cell, cell2);
 
                             }
@@ -213,13 +273,23 @@ angular.module('myApp.directives', [])
 
                     }
                     else if (cell2.getValue() == 0){
+
+                        addOne = true;
                         cell2.setValue(cell.getValue());
                         cell.setValue(0);
                     }
-                    else if (cell.getValue() == cell2.getValue() && first) {
+                    else if (cell.getValue() == cell2.getValue() && !cell2.isJustAdded() && !cell.isJustAdded()) {
+
+
+                        addOne = true;
                         cell.setValue(0);
                         cell2.setValue(cell2.getValue()*2);
-                        first = false;
+                        cell2.setJustAdded(true);
+
+                        if (cell2.getValue()>=2048) {
+                            showWin();
+                        }
+
                     }
                 }
 
@@ -229,6 +299,12 @@ angular.module('myApp.directives', [])
                         cell.redraw();
 
                     });
+                }
+
+                function showWin() {
+
+                    var body = angular.element(document).find('body');
+                    body.addClass("win");
                 }
 
 
